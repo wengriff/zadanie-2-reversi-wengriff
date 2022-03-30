@@ -1,12 +1,24 @@
 package sk.stuba.fei.uim.oop;
 
+import java.awt.Graphics;
+
 public class Board {
-    private static final int[] BOARD_SIZE = {6, 8, 10, 12};
+    public static final int BOARD_SIZE_MIN = 6;
+    public static final int BOARD_SIZE_MAX = 12;
+    private Cell[][] board;
     
     public Board() {
         this.createBoard();
     }
 
-    private void createBoard() {
+    public void createBoard() {
+    }
+
+    public void display(Graphics g) {
+
+    }
+
+    public int getBoardSize() {
+        return BOARD_SIZE_MIN;
     }
 }
