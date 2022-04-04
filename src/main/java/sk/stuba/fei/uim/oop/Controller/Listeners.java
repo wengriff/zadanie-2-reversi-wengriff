@@ -1,9 +1,12 @@
-package sk.stuba.fei.uim.oop;
+package sk.stuba.fei.uim.oop.Controller;
 
 import java.awt.event.*;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class Listeners implements MouseListener, MouseMotionListener, ActionListener, KeyListener {
+
+public class Listeners implements MouseListener, MouseMotionListener, ActionListener, KeyListener, ChangeListener {
     @Override
     public void mouseClicked(MouseEvent e) {}
 
@@ -36,4 +39,7 @@ public class Listeners implements MouseListener, MouseMotionListener, ActionList
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    @Override
+    public void stateChanged(ChangeEvent e) {}
 }
