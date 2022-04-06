@@ -7,6 +7,5 @@ public class Player extends Entity {
     public Player() {
         super.name = "Player";
         super.color = Color.WHITE;
-        super.num = 0;
     }
 }

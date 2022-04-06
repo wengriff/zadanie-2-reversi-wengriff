@@ -5,11 +5,10 @@ import java.util.List;
 
 import sk.stuba.fei.uim.oop.Board.Cell;
 
-public class Entity {
+public abstract class Entity {
     protected String name;
     protected Color color;
     protected List<Cell> cells;
-    protected int id;
 
     public Entity() {
         this.cells = new ArrayList<>();
@@ -22,6 +21,4 @@ public class Entity {
     public String getName() { return this.name; }
 
     public List<Cell> getCells() { return this.cells; }
-
-    public int getId() { return this.id; }
 }

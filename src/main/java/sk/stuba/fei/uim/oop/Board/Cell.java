@@ -8,6 +8,9 @@ import sk.stuba.fei.uim.oop.Entity.Entity;
 
 public class Cell extends JPanel {
     public static final Color DEFAULT_CELL_COLOR = new Color(7, 176, 30);
+    public static final Color DEFAULT_CELL_HIGHLIGHT = new Color(7, 150, 30);
+    public static final Color POSSIBLE_MOVE_CELL_HIGHLIGHT = new Color(153, 204, 255);
+    public static final Color POSSIBLE_MOVE_CELL_HOVER_HIGHLIGHT = new Color(51, 153, 255); 
     private Entity owner;
     private int i,j;
 

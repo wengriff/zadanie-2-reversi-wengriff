@@ -6,6 +6,7 @@ import java.util.List;
 import sk.stuba.fei.uim.oop.Board.Board;
 import sk.stuba.fei.uim.oop.Board.Cell;
 import sk.stuba.fei.uim.oop.Entity.Enemy;
+import sk.stuba.fei.uim.oop.Entity.Entity;
 import sk.stuba.fei.uim.oop.Entity.Player;
 
 import java.awt.*;
@@ -21,11 +22,11 @@ public class MoveLogic {
         this.enemy = enemy;
     } 
 
-    public boolean isValidMove(int nextPlayer, Cell cell) {
+    public boolean isValidMove(Entity nextPlayer, Cell cell) {
         return !(this.getCellsToFlip(nextPlayer, cell).isEmpty());
     }
     
-    public boolean hasValidMove(int nextPlayer) {
+    public boolean hasValidMove(Entity nextPlayer) {
         for(int i = 0; i < this.board.getSize(); i ++) {
             for(int j = 0; j < this.board.getSize(); j++) {
                 if(isValidMove(nextPlayer,this.board.getBoardArray()[i][j])) {
@@ -46,23 +47,23 @@ public class MoveLogic {
         }
     }
 
-    public void showPossibleMoves(int nextPlayer) {
+    public void showPossibleMoves() {
         for(int i = 0; i < this.board.getSize(); i++) {
             for(int j = 0; j < this.board.getSize(); j++) {
                 Cell cell = this.board.getBoardArray()[i][j];
                 if(!cell.hasOwner()) {
-                    if(cell.getBackground() == Color.CYAN) {
+                    if(cell.getBackground() == Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
                         cell.setBackground(Cell.DEFAULT_CELL_COLOR);
                     }
-                    if(this.isValidMove(nextPlayer, cell)) {
-                        cell.setBackground(Color.CYAN);
+                    if(this.isValidMove(this.player, cell)) {
+                        cell.setBackground(Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT);
                     }
                 }
             }
         }
     }
 
-    public List<Cell> getCellsToFlip(int nextPlayer, Cell cell) {
+    public List<Cell> getCellsToFlip(Entity nextPlayer, Cell cell) {
         List<Cell> cellsToFlip = new ArrayList<>();
 
         // 1
@@ -72,8 +73,8 @@ public class MoveLogic {
             column++;
             Cell currentCell = this.board.getBoardArray()[cell.getI()][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getId() == nextPlayer) {
-                if(owner != null && owner.getId() == nextPlayer) {
+            if(owner == null || owner.equals(nextPlayer)) {
+                if(owner != null && owner.equals(nextPlayer)) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -89,8 +90,8 @@ public class MoveLogic {
             column--;
             Cell currentCell = this.board.getBoardArray()[cell.getI()][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getId() == nextPlayer) {
-                if(owner != null && owner.getId() == nextPlayer) {
+            if(owner == null || owner.equals(nextPlayer)) {
+                if(owner != null && owner.equals(nextPlayer)) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -106,8 +107,8 @@ public class MoveLogic {
             row++;
             Cell currentCell = this.board.getBoardArray()[row][cell.getJ()];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getId() == nextPlayer) {
-                if(owner != null && owner.getId() == nextPlayer) {
+            if(owner == null || owner.equals(nextPlayer)) {
+                if(owner != null && owner.equals(nextPlayer)) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -123,8 +124,8 @@ public class MoveLogic {
             row--;
             Cell currentCell = this.board.getBoardArray()[row][cell.getJ()];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getId() == nextPlayer) {
-                if(owner != null && owner.getId() == nextPlayer) {
+            if(owner == null || owner.equals(nextPlayer)) {
+                if(owner != null && owner.equals(nextPlayer)) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -142,8 +143,8 @@ public class MoveLogic {
             column--;
             Cell currentCell = this.board.getBoardArray()[row][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getId() == nextPlayer) {
-                if(owner != null && owner.getId() == nextPlayer) {
+            if(owner == null || owner.equals(nextPlayer)) {
+                if(owner != null && owner.equals(nextPlayer)) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -161,8 +162,8 @@ public class MoveLogic {
             column++;
             Cell currentCell = this.board.getBoardArray()[row][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getId() == nextPlayer) {
-                if(owner != null && owner.getId() == nextPlayer) {
+            if(owner == null || owner.equals(nextPlayer)) {
+                if(owner != null && owner.equals(nextPlayer)) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -180,8 +181,8 @@ public class MoveLogic {
             column--;
             Cell currentCell = this.board.getBoardArray()[row][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getId() == nextPlayer) {
-                if(owner != null && owner.getId() == nextPlayer) {
+            if(owner == null || owner.equals(nextPlayer)) {
+                if(owner != null && owner.equals(nextPlayer)) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -199,8 +200,8 @@ public class MoveLogic {
             column++;
             Cell currentCell = this.board.getBoardArray()[row][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getId() == nextPlayer) {
-                if(owner != null && owner.getId() == nextPlayer) {
+            if(owner == null || owner.equals(nextPlayer)) {
+                if(owner != null && owner.equals(nextPlayer)) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
