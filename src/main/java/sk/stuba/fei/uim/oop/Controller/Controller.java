@@ -38,24 +38,28 @@ public class Controller extends Listeners {
         this.createMenu();
         this.boardSizeSlider.addChangeListener(this);
         this.board.setStartingPosition(this.player, this.enemy);
-
+        this.showPossibleMoves();
         // this.play();
     }
 
     private void play() {
-        while(!this.gameEnd()) {
-
+        while(true) {
+            // this.showPossibleMoves();
+            if(this.nextPlayer == 1) {
+                this.enemyTurn();
+            }
         }
     }
 
-    private boolean gameEnd() {
-        for(int i = 0; i < this.board.getGameArea().getComponentCount(); i++) {
-            Cell cell = (Cell)this.board.getGameArea().getComponent(i);
-            if(!cell.hasOwner()) {
-                return false;
+    private void showPossibleMoves() {
+        for(int i = 0; i < this.board.getSize(); i++) {
+            for(int j = 0; j < this.board.getSize(); j++) {
+                Cell cell = this.board.getBoard()[i][j];
+                if(this.isValidMove(this.nextPlayer, cell)) {
+                    cell.setBackground(Color.CYAN);
+                }
             }
         }
-        return true;
     }
 
     private void createMenu() {
@@ -88,7 +92,7 @@ public class Controller extends Listeners {
 
     private void createNextPlayerLabel() {
         this.nextPlayerLabel.setHorizontalAlignment(JLabel.CENTER);
-        this.nextPlayerLabel.setText("Next move: " + this.player.getName());
+        this.nextPlayerLabel.setText("Next move: " + (this.nextPlayer == 0 ? "Player" : "Computer"));
     }
 
     @Override
@@ -124,15 +128,12 @@ public class Controller extends Listeners {
         if(cell.hasOwner()) {
             return;
         }
-        if(this.isValidMove(cell) && this.nextPlayer == 0) {
-            List<Cell> cellsToFlip = this.getCellsToFlip(cell);
+        if(this.isValidMove(this.nextPlayer , cell) && this.nextPlayer == 0) {
+            List<Cell> cellsToFlip = this.getCellsToFlip(this.nextPlayer, cell);
             this.flipCells(cellsToFlip);
             if(this.nextPlayer == 0) {
                 cell.setOwner(this.player);
                 this.nextPlayer = 1;
-            } else {
-                cell.setOwner(this.enemy);
-                this.nextPlayer = 0;
             }
         }
     }
@@ -157,11 +158,26 @@ public class Controller extends Listeners {
     //     }
     // }
 
+    private boolean hasMove(int nextPlayer) {
+        for(int i = 0; i < this.board.getSize(); i ++) {
+            for(int j = 0; j < this.board.getSize(); j++) {
+                if(isValidMove(nextPlayer,this.board.getBoard()[i][j])) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public void mouseEntered(MouseEvent e) {
         Cell cell = (Cell)e.getSource();
         if(!cell.hasOwner()) {
-            cell.setBackground(new Color(7, 150, 30));
+            if(cell.getBackground() != Color.CYAN) {
+                cell.setBackground(new Color(7, 150, 30));
+            } else if (cell.getBackground() == Color.CYAN) {
+                cell.setBackground(Color.MAGENTA);
+            }
         }
     }
 
@@ -169,7 +185,11 @@ public class Controller extends Listeners {
     public void mouseExited(MouseEvent e) {
         Cell cell = (Cell)e.getSource();
         if(!cell.hasOwner()) {
-            cell.setBackground(new Color(7, 176, 30));
+            if(cell.getBackground() == Color.MAGENTA ) {
+                cell.setBackground(Color.CYAN);
+            } else if (cell.getBackground() != Color.CYAN) {
+                cell.setBackground(new Color(7, 176, 30));
+            }
         }
     }
 
@@ -183,11 +203,11 @@ public class Controller extends Listeners {
         }
     }
 
-    private boolean isValidMove(Cell cell) {
-        return !(this.getCellsToFlip(cell).isEmpty());
+    private boolean isValidMove(int nextPlayer, Cell cell) {
+        return !(this.getCellsToFlip(nextPlayer, cell).isEmpty());
     }
 
-    private List<Cell> getCellsToFlip(Cell cell) {
+    private List<Cell> getCellsToFlip(int nextPlayer, Cell cell) {
         List<Cell> cellsToFlip = new ArrayList<>();
 
         // 1
@@ -197,8 +217,8 @@ public class Controller extends Listeners {
             column++;
             Cell currentCell = this.board.getBoard()[cell.getI()][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getNum() == this.nextPlayer) {
-                if(owner != null && owner.getNum() == this.nextPlayer) {
+            if(owner == null || owner.getNum() == nextPlayer) {
+                if(owner != null && owner.getNum() == nextPlayer) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -214,8 +234,8 @@ public class Controller extends Listeners {
             column--;
             Cell currentCell = this.board.getBoard()[cell.getI()][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getNum() == this.nextPlayer) {
-                if(owner != null && owner.getNum() == this.nextPlayer) {
+            if(owner == null || owner.getNum() == nextPlayer) {
+                if(owner != null && owner.getNum() == nextPlayer) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -231,8 +251,8 @@ public class Controller extends Listeners {
             row++;
             Cell currentCell = this.board.getBoard()[row][cell.getJ()];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getNum() == this.nextPlayer) {
-                if(owner != null && owner.getNum() == this.nextPlayer) {
+            if(owner == null || owner.getNum() == nextPlayer) {
+                if(owner != null && owner.getNum() == nextPlayer) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -248,8 +268,8 @@ public class Controller extends Listeners {
             row--;
             Cell currentCell = this.board.getBoard()[row][cell.getJ()];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getNum() == this.nextPlayer) {
-                if(owner != null && owner.getNum() == this.nextPlayer) {
+            if(owner == null || owner.getNum() == nextPlayer) {
+                if(owner != null && owner.getNum() == nextPlayer) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -267,8 +287,8 @@ public class Controller extends Listeners {
             column--;
             Cell currentCell = this.board.getBoard()[row][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getNum() == this.nextPlayer) {
-                if(owner != null && owner.getNum() == this.nextPlayer) {
+            if(owner == null || owner.getNum() == nextPlayer) {
+                if(owner != null && owner.getNum() == nextPlayer) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -286,8 +306,8 @@ public class Controller extends Listeners {
             column++;
             Cell currentCell = this.board.getBoard()[row][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getNum() == this.nextPlayer) {
-                if(owner != null && owner.getNum() == this.nextPlayer) {
+            if(owner == null || owner.getNum() == nextPlayer) {
+                if(owner != null && owner.getNum() == nextPlayer) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -305,8 +325,8 @@ public class Controller extends Listeners {
             column--;
             Cell currentCell = this.board.getBoard()[row][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getNum() == this.nextPlayer) {
-                if(owner != null && owner.getNum() == this.nextPlayer) {
+            if(owner == null || owner.getNum() == nextPlayer) {
+                if(owner != null && owner.getNum() == nextPlayer) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -321,11 +341,11 @@ public class Controller extends Listeners {
         column = cell.getJ();
         while(row > 0  && column < this.board.getSize() - 1) {
             row--;
-            column--;
+            column++;
             Cell currentCell = this.board.getBoard()[row][column];
             var owner = currentCell.getOwner();
-            if(owner == null || owner.getNum() == this.nextPlayer) {
-                if(owner != null && owner.getNum() == this.nextPlayer) {
+            if(owner == null || owner.getNum() == nextPlayer) {
+                if(owner != null && owner.getNum() == nextPlayer) {
                     cellsToFlip.addAll(possibleCellsToFlip);
                 }
                 break;
@@ -347,6 +367,29 @@ public class Controller extends Listeners {
         } else {
             this.nextPlayer = 0;
         }
+    }
+
+    private void enemyTurn() {
+        List<Cell> possibleMoves = new ArrayList<>();
+        Cell bestMove;
+        for(int i = 0; i < this.board.getSize(); i++) {
+            for(int j = 0; j < this.board.getSize(); j++) {
+                Cell cell = this.board.getBoard()[i][j];
+                if(this.isValidMove(1, cell)) {
+                    possibleMoves.add(cell);
+                }
+            }
+        }
+        bestMove = possibleMoves.get(0);
+        bestMove.getSize();
+        for(Cell cell : possibleMoves) {
+            if(this.getCellsToFlip(1, cell).size() > this.getCellsToFlip(1, bestMove).size()) {
+                bestMove = cell;
+            }
+        }
+        List<Cell> cellsToFlip = this.getCellsToFlip(nextPlayer, bestMove);
+        this.flipCells(cellsToFlip);
+        this.nextPlayer = 0;
     }
 
     private void removeEntityCells() {
