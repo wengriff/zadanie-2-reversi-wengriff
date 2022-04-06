@@ -10,6 +10,7 @@ import sk.stuba.fei.uim.oop.Board.Board;
 import sk.stuba.fei.uim.oop.Board.Cell;
 import sk.stuba.fei.uim.oop.Entity.Enemy;
 import sk.stuba.fei.uim.oop.Entity.Player;
+import java.util.concurrent.TimeUnit;
 
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,7 @@ public class Controller extends Listeners {
     private JSlider boardSizeSlider;
     private Frame frame;
     private int nextPlayer;
+    private boolean gameOver;    
 
     public Controller(Frame frame) {
         this.frame = frame;
@@ -34,29 +36,25 @@ public class Controller extends Listeners {
         this.boardSizeLabel = new JLabel();
         this.nextPlayerLabel = new JLabel();
         this.boardSizeSlider = new JSlider(Board.BOARD_SIZE_MIN, Board.BOARD_SIZE_MAX, board.getSize());
+        this.gameOver = false;
         this.nextPlayer = 0;
         this.createMenu();
         this.boardSizeSlider.addChangeListener(this);
         this.board.setStartingPosition(this.player, this.enemy);
         this.showPossibleMoves();
-        // this.play();
-    }
-
-    private void play() {
-        while(true) {
-            // this.showPossibleMoves();
-            if(this.nextPlayer == 1) {
-                this.enemyTurn();
-            }
-        }
     }
 
     private void showPossibleMoves() {
         for(int i = 0; i < this.board.getSize(); i++) {
             for(int j = 0; j < this.board.getSize(); j++) {
                 Cell cell = this.board.getBoard()[i][j];
-                if(this.isValidMove(this.nextPlayer, cell)) {
-                    cell.setBackground(Color.CYAN);
+                if(!cell.hasOwner()) {
+                    if(cell.getBackground() == Color.CYAN) {
+                        cell.setBackground(Cell.DEFAULT_CELL_COLOR);
+                    }
+                    if(this.isValidMove(this.nextPlayer, cell)) {
+                        cell.setBackground(Color.CYAN);
+                    }
                 }
             }
         }
@@ -75,6 +73,8 @@ public class Controller extends Listeners {
         this.frame.add(this.board.getGameArea());
         this.board.setStartingPosition(this.player, this.enemy);
         this.getBoardSizeLabel();
+        this.nextPlayer = 0;
+        this.showPossibleMoves();
         this.frame.revalidate();
     }
 
@@ -92,7 +92,11 @@ public class Controller extends Listeners {
 
     private void createNextPlayerLabel() {
         this.nextPlayerLabel.setHorizontalAlignment(JLabel.CENTER);
-        this.nextPlayerLabel.setText("Next move: " + (this.nextPlayer == 0 ? "Player" : "Computer"));
+        this.nextPlayerLabel.setText("Next move: Player" );
+    }
+
+    private void updateNextPlayerLabel(int nextPlayer) {
+        this.nextPlayerLabel.setText("Next move: " + (nextPlayer == 0 ? "Player" : "Computer"));
     }
 
     @Override
@@ -128,12 +132,51 @@ public class Controller extends Listeners {
         if(cell.hasOwner()) {
             return;
         }
+        if(!this.hasValidMove(0)) {
+            this.nextPlayer = 1;
+        }
         if(this.isValidMove(this.nextPlayer , cell) && this.nextPlayer == 0) {
             List<Cell> cellsToFlip = this.getCellsToFlip(this.nextPlayer, cell);
             this.flipCells(cellsToFlip);
             if(this.nextPlayer == 0) {
                 cell.setOwner(this.player);
                 this.nextPlayer = 1;
+            }
+        }
+        if(!this.hasValidMove(1)) {
+            this.nextPlayer = 0;
+            return;
+        }
+        if(this.nextPlayer == 1) {
+            this.enemyTurn();
+        }
+        if(!this.hasValidMove(0) && !this.hasValidMove(1)) {
+            String winner = this.enemy.getCells().size() < this.player.getCells().size() ? "Player" : "Computer";
+            this.nextPlayerLabel.setText(winner + " Won!");
+        }
+        this.showPossibleMoves();
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        Cell cell = (Cell)e.getSource();
+        if(!cell.hasOwner()) {
+            if(cell.getBackground() != Color.CYAN) {
+                cell.setBackground(new Color(7, 150, 30));
+            } else if (cell.getBackground() == Color.CYAN) {
+                cell.setBackground(Color.MAGENTA);
+            }
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        Cell cell = (Cell)e.getSource();
+        if(!cell.hasOwner()) {
+            if(cell.getBackground() == Color.MAGENTA ) {
+                cell.setBackground(Color.CYAN);
+            } else if (cell.getBackground() != Color.CYAN) {
+                cell.setBackground(Cell.DEFAULT_CELL_COLOR);
             }
         }
     }
@@ -158,7 +201,7 @@ public class Controller extends Listeners {
     //     }
     // }
 
-    private boolean hasMove(int nextPlayer) {
+    private boolean hasValidMove(int nextPlayer) {
         for(int i = 0; i < this.board.getSize(); i ++) {
             for(int j = 0; j < this.board.getSize(); j++) {
                 if(isValidMove(nextPlayer,this.board.getBoard()[i][j])) {
@@ -167,30 +210,6 @@ public class Controller extends Listeners {
             }
         }
         return false;
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        Cell cell = (Cell)e.getSource();
-        if(!cell.hasOwner()) {
-            if(cell.getBackground() != Color.CYAN) {
-                cell.setBackground(new Color(7, 150, 30));
-            } else if (cell.getBackground() == Color.CYAN) {
-                cell.setBackground(Color.MAGENTA);
-            }
-        }
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        Cell cell = (Cell)e.getSource();
-        if(!cell.hasOwner()) {
-            if(cell.getBackground() == Color.MAGENTA ) {
-                cell.setBackground(Color.CYAN);
-            } else if (cell.getBackground() != Color.CYAN) {
-                cell.setBackground(new Color(7, 176, 30));
-            }
-        }
     }
 
     private void flipCells(List<Cell> cellsToFlip) {
@@ -228,7 +247,7 @@ public class Controller extends Listeners {
         }
 
         // 2
-        possibleCellsToFlip = new ArrayList<>();
+        possibleCellsToFlip.clear();
         column = cell.getJ();
         while(column > 0) {
             column--;
@@ -245,7 +264,7 @@ public class Controller extends Listeners {
         }
 
         // 3
-        possibleCellsToFlip = new ArrayList<>();
+        possibleCellsToFlip.clear();
         int row = cell.getI();
         while(row < this.board.getSize() - 1) {
             row++;
@@ -262,7 +281,7 @@ public class Controller extends Listeners {
         }
 
         // 4
-        possibleCellsToFlip = new ArrayList<>();
+        possibleCellsToFlip.clear();
         row = cell.getI();
         while(row > 0) {
             row--;
@@ -279,7 +298,7 @@ public class Controller extends Listeners {
         }
 
         // 5
-        possibleCellsToFlip = new ArrayList<>();
+        possibleCellsToFlip.clear();
         row = cell.getI();
         column = cell.getJ();
         while(row > 0 && column > 0) {
@@ -298,7 +317,7 @@ public class Controller extends Listeners {
         }
         
         // 6
-        possibleCellsToFlip = new ArrayList<>();
+        possibleCellsToFlip.clear();
         row = cell.getI();
         column = cell.getJ();
         while(row < this.board.getSize() - 1 && column < this.board.getSize() - 1) {
@@ -317,7 +336,7 @@ public class Controller extends Listeners {
         }
 
         // 7
-        possibleCellsToFlip = new ArrayList<>();
+        possibleCellsToFlip.clear();
         row = cell.getI();
         column = cell.getJ();
         while(row < this.board.getSize() - 1 && column > 0) {
@@ -336,7 +355,7 @@ public class Controller extends Listeners {
         }
 
         // 8
-        possibleCellsToFlip = new ArrayList<>();
+        possibleCellsToFlip.clear();
         row = cell.getI();
         column = cell.getJ();
         while(row > 0  && column < this.board.getSize() - 1) {
@@ -389,6 +408,7 @@ public class Controller extends Listeners {
         }
         List<Cell> cellsToFlip = this.getCellsToFlip(nextPlayer, bestMove);
         this.flipCells(cellsToFlip);
+        bestMove.setOwner(this.enemy);
         this.nextPlayer = 0;
     }
 

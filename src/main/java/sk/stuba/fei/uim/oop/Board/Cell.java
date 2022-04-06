@@ -1,11 +1,13 @@
 package sk.stuba.fei.uim.oop.Board;
 
 import javax.swing.JPanel;
+import java.awt.*;
 
 import sk.stuba.fei.uim.oop.Entity.Entity;
 
 
 public class Cell extends JPanel {
+    public static final Color DEFAULT_CELL_COLOR = new Color(7, 176, 30);
     private Entity owner;
     private int i,j;
 

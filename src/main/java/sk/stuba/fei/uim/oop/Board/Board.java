@@ -36,7 +36,7 @@ public class Board {
             for(int j = 0; j < this.getSize(); j++) {
                 Cell cell = new Cell(i,j);
                 cell.setOpaque(true);
-                cell.setBackground(new Color(7, 176, 30));
+                cell.setBackground(Cell.DEFAULT_CELL_COLOR);
                 cell.addMouseListener(this.mouseListener);
                 this.gameArea.add(cell);
                 this.board[i][j] = cell;
