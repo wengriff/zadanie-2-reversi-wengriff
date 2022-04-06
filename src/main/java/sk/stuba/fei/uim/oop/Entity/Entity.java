@@ -9,7 +9,7 @@ public class Entity {
     protected String name;
     protected Color color;
     protected List<Cell> cells;
-    protected int num;
+    protected int id;
 
     public Entity() {
         this.cells = new ArrayList<>();
@@ -23,5 +23,5 @@ public class Entity {
 
     public List<Cell> getCells() { return this.cells; }
 
-    public int getNum() { return this.num; }
+    public int getId() { return this.id; }
 }

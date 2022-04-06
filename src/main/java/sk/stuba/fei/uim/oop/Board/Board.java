@@ -15,7 +15,7 @@ public class Board {
     private int size;
     private JPanel gameArea;
     private MouseListener mouseListener;
-    private Cell[][] board;
+    private Cell[][] boardArray;
     
     public Board(MouseListener mouseListener) {
         this.size = Board.BOARD_SIZE_MIN;
@@ -29,7 +29,7 @@ public class Board {
 
     private void initializeBoard() {
         this.gameArea = new JPanel();
-        this.board = new Cell[this.getSize()][this.getSize()];
+        this.boardArray = new Cell[this.getSize()][this.getSize()];
         this.gameArea.setBackground(Color.ORANGE);
         this.gameArea.setLayout(new GridLayout(this.getSize(), this.getSize(), 2, 2));
         for(int i = 0; i < this.getSize(); i++) {
@@ -39,7 +39,7 @@ public class Board {
                 cell.setBackground(Cell.DEFAULT_CELL_COLOR);
                 cell.addMouseListener(this.mouseListener);
                 this.gameArea.add(cell);
-                this.board[i][j] = cell;
+                this.boardArray[i][j] = cell;
             }
         }
     }
@@ -60,7 +60,7 @@ public class Board {
 
     public void setSize(int value) { this.size = value; }
 
-    public Cell[][] getBoard() { return this.board; }
+    public Cell[][] getBoardArray() { return this.boardArray; }
 
     public JPanel getGameArea() { return this.gameArea; }
 }
