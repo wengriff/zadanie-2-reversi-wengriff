@@ -20,6 +20,12 @@ public class Reversi {
 
         frame.add(controller.getGameArea(), BorderLayout.CENTER);
 
+        frame.add(controller.getMenu(), BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+}
+
         // JPanel menu = new JPanel();
         // JButton restart = new JButton("Restart");   
         // restart.addActionListener(controller);
@@ -32,10 +38,3 @@ public class Reversi {
         // menu.add(restart);
 
         // frame.add(menu, BorderLayout.SOUTH);
-
-        frame.add(controller.getMenu(), BorderLayout.SOUTH);
-
-
-        frame.setVisible(true);
-    }
-}

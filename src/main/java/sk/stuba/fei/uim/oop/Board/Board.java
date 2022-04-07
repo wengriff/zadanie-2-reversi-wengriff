@@ -30,12 +30,12 @@ public class Board {
     private void initializeBoard() {
         this.gameArea = new JPanel();
         this.boardArray = new Cell[this.getSize()][this.getSize()];
-        this.gameArea.setBackground(Color.ORANGE);
-        this.gameArea.setLayout(new GridLayout(this.getSize(), this.getSize(), 2, 2));
+        this.gameArea.setBackground(new Color(255, 204, 204));
+        this.gameArea.setLayout(new GridLayout(this.getSize(), this.getSize(), 3, 3));
         for(int i = 0; i < this.getSize(); i++) {
             for(int j = 0; j < this.getSize(); j++) {
                 Cell cell = new Cell(i,j);
-                cell.setOpaque(true);
+                // cell.setOpaque(true);
                 cell.setBackground(Cell.DEFAULT_CELL_COLOR);
                 cell.addMouseListener(this.mouseListener);
                 this.gameArea.add(cell);

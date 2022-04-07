@@ -52,6 +52,13 @@ public class Controller extends Listeners {
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
+            // case KeyEvent.VK_W:
+            //     if(this.nextPlayer instanceof Enemy) {
+            //         this.enemy.move(this.board, this.moveLogic);
+            //         this.flipPlayer();
+            //     }
+            //     this.moveLogic.showPossibleMoves();
+            // break;
             case KeyEvent.VK_R:
                 System.out.println("restart");
                 this.restartGame();
@@ -93,7 +100,7 @@ public class Controller extends Listeners {
                 this.flipPlayer();
             }
         }
-        if(!this.moveLogic.hasValidMove(this.enemy)) {
+        if(!this.moveLogic.hasValidMove(this.enemy) || !this.moveLogic.hasValidMove(this.player)) {
             this.flipPlayer();
             return;
         }
