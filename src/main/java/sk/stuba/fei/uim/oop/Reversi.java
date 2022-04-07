@@ -25,16 +25,3 @@ public class Reversi {
         frame.setVisible(true);
     }
 }
-
-        // JPanel menu = new JPanel();
-        // JButton restart = new JButton("Restart");   
-        // restart.addActionListener(controller);
-        // restart.setFocusable(false);
-
-        // menu.setLayout(new GridLayout(2, 2));
-        // menu.add(controller.getBoardSizeLabel());
-        // menu.add(controller.getNextPlayerLabel());
-        // menu.add(controller.getBoardSizeSlider());
-        // menu.add(restart);
-
-        // frame.add(menu, BorderLayout.SOUTH);

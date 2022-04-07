@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.awt.*;
 
 import sk.stuba.fei.uim.oop.Board.Board;
+import sk.stuba.fei.uim.oop.Entity.Entity;
 
 public class Menu extends JPanel {
     private Board board;
@@ -72,8 +73,12 @@ public class Menu extends JPanel {
         this.nextPlayerLabel.setText("Next move: Player" );
     }
 
-    private void updateNextPlayerLabel(int nextPlayer) {
-        this.nextPlayerLabel.setText("Next move: " + (nextPlayer == 0 ? "Player" : "Computer"));
+    public void resetNextPlayerLabel() {
+        this.nextPlayerLabel.setText("Next move: Player" );
+    }
+
+    public void updateNextPlayerLabel(Entity nextPlayer) {
+        this.nextPlayerLabel.setText("Next move: " + (nextPlayer.getName() == "Player" ? "Player" : "Computer"));
     }
     
     public JButton getRestartButton() { return this.restart; }

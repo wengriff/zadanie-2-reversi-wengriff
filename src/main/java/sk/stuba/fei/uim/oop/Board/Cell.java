@@ -12,11 +12,11 @@ public class Cell extends JPanel {
     public static final Color POSSIBLE_MOVE_CELL_HIGHLIGHT = new Color(153, 204, 255);
     public static final Color POSSIBLE_MOVE_CELL_HOVER_HIGHLIGHT = new Color(51, 153, 255); 
     private Entity owner;
-    private int i,j;
+    private int row,column;
 
-    public Cell(int i, int j) {
-        this.i = i;
-        this.j = j;
+    public Cell(int row, int column) {
+        this.row = row;
+        this.column = column;
     }
 
     public void setOwner(Entity owner) { 
@@ -35,7 +35,7 @@ public class Cell extends JPanel {
 
     public boolean hasOwner() { return this.owner != null; }
 
-    public int getJ() { return this.j; }
+    public int getColumn() { return this.column; }
 
-    public int getI() { return this.i; }
+    public int getRow() { return this.row; }
 }

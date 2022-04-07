@@ -44,6 +44,7 @@ public class Controller extends Listeners {
         this.board.createBoard();
         this.frame.add(this.board.getGameArea());
         this.board.setStartingPosition(this.player, this.enemy);
+        this.menu.resetNextPlayerLabel();
         this.nextPlayer = this.player;
         this.moveLogic.showPossibleMoves();
         this.frame.revalidate();
@@ -86,33 +87,50 @@ public class Controller extends Listeners {
     @Override
     public void mousePressed(MouseEvent e) {
         Cell cell = (Cell)e.getSource();
+
         if(cell.hasOwner()) {
             return;
         }
-        if(!this.moveLogic.hasValidMove(this.player)) {
+
+        if(this.moveLogic.isValidMove(this.nextPlayer , cell) && this.nextPlayer instanceof Player) {
+            List<Cell> cellsToFlip = this.moveLogic.getCellsToFlip(this.nextPlayer, cell);
+            this.moveLogic.flipCells(cellsToFlip);
+            cell.setOwner(this.player);
             this.flipPlayer();
         }
-        if(this.moveLogic.isValidMove(this.nextPlayer , cell) && this.nextPlayer instanceof Player) {
-            List<Cell> cellsToFlip = this.moveLogic.getCellsToFlip(nextPlayer, cell);
-            this.moveLogic.flipCells(cellsToFlip);
-            if(this.nextPlayer instanceof Player) {
-                cell.setOwner(this.player);
-                this.flipPlayer();
-            }
+
+        if(this.isGameFinished()) {
+            System.out.println("ddddddd");
+            this.displayWinner();
+            return;
         }
-        if(!this.moveLogic.hasValidMove(this.enemy) || !this.moveLogic.hasValidMove(this.player)) {
+
+        System.out.println(this.moveLogic.hasValidMove(this.enemy) + " - e");
+
+        if(!this.moveLogic.hasValidMove(this.enemy)) {
             this.flipPlayer();
             return;
         }
-        if(this.nextPlayer instanceof Enemy) {
-            this.enemy.move(this.board, this.moveLogic);
+
+        // this.delay(2000);
+        if(this.moveLogic.hasValidMove(this.player) && this.nextPlayer instanceof Enemy) {
+            do {
+                this.enemy.move(this.board, this.moveLogic);
+            } while(!this.moveLogic.hasValidMove(this.player));
             this.flipPlayer();
         }
-        if(!this.moveLogic.hasValidMove(this.player) && !this.moveLogic.hasValidMove(this.enemy)) {
-            String winner = this.enemy.getCells().size() < this.player.getCells().size() ? "Player" : "Computer";
-            this.menu.getNextPlayerLabel().setText(winner + " Won!");
+        System.out.println(this.moveLogic.hasValidMove(this.player) + " - p");
+        if(this.isGameFinished()) {
+            System.out.println("hhhhhhhh");
+            this.displayWinner();
+            this.moveLogic.showPossibleMoves();
+            return;
         }
         this.moveLogic.showPossibleMoves();
+    }
+
+    private boolean isGameFinished() {
+        return (!this.moveLogic.hasValidMove(this.player) && !this.moveLogic.hasValidMove(this.enemy));
     }
 
     @Override
@@ -150,6 +168,23 @@ public class Controller extends Listeners {
     private void clearScore() {
         this.player.getCells().clear();
         this.enemy.getCells().clear();
+    }
+
+    private void delay(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private String determineWinner() {
+        return this.enemy.getCells().size() < this.player.getCells().size() ? "Player" : "Computer";
+    }
+
+    private void displayWinner() {
+        String winner = determineWinner();
+        this.menu.getNextPlayerLabel().setText(winner + " Won!");
     }
 
     public JPanel getGameArea() { return this.board.getGameArea(); }

@@ -29,7 +29,7 @@ public class MoveLogic {
     public boolean hasValidMove(Entity nextPlayer) {
         for(int i = 0; i < this.board.getSize(); i ++) {
             for(int j = 0; j < this.board.getSize(); j++) {
-                if(isValidMove(nextPlayer,this.board.getBoardArray()[i][j])) {
+                if(isValidMove(nextPlayer, this.board.getBoardArray()[i][j])) {
                     return true;
                 }
             }
@@ -39,10 +39,10 @@ public class MoveLogic {
 
     public void flipCells(List<Cell> cellsToFlip) {
         for(Cell cell : cellsToFlip) {
-            if(this.board.getBoardArray()[cell.getI()][cell.getJ()].getOwner() == this.enemy) {
-                this.board.getBoardArray()[cell.getI()][cell.getJ()].setOwner(this.player);
+            if(this.board.getBoardArray()[cell.getRow()][cell.getColumn()].getOwner() == this.enemy) {
+                this.board.getBoardArray()[cell.getRow()][cell.getColumn()].setOwner(this.player);
             } else {
-                this.board.getBoardArray()[cell.getI()][cell.getJ()].setOwner(this.enemy);
+                this.board.getBoardArray()[cell.getRow()][cell.getColumn()].setOwner(this.enemy);
             }
         }
     }
@@ -68,10 +68,10 @@ public class MoveLogic {
 
         // 1
         List<Cell> possibleCellsToFlip = new ArrayList<>();
-        int column = cell.getJ();
+        int column = cell.getColumn();
         while(column < this.board.getSize() - 1) {
             column++;
-            Cell currentCell = this.board.getBoardArray()[cell.getI()][column];
+            Cell currentCell = this.board.getBoardArray()[cell.getRow()][column];
             var owner = currentCell.getOwner();
             if(owner == null || owner.equals(nextPlayer)) {
                 if(owner != null && owner.equals(nextPlayer)) {
@@ -85,10 +85,10 @@ public class MoveLogic {
 
         // 2
         possibleCellsToFlip.clear();
-        column = cell.getJ();
+        column = cell.getColumn();
         while(column > 0) {
             column--;
-            Cell currentCell = this.board.getBoardArray()[cell.getI()][column];
+            Cell currentCell = this.board.getBoardArray()[cell.getRow()][column];
             var owner = currentCell.getOwner();
             if(owner == null || owner.equals(nextPlayer)) {
                 if(owner != null && owner.equals(nextPlayer)) {
@@ -102,10 +102,10 @@ public class MoveLogic {
 
         // 3
         possibleCellsToFlip.clear();
-        int row = cell.getI();
+        int row = cell.getRow();
         while(row < this.board.getSize() - 1) {
             row++;
-            Cell currentCell = this.board.getBoardArray()[row][cell.getJ()];
+            Cell currentCell = this.board.getBoardArray()[row][cell.getColumn()];
             var owner = currentCell.getOwner();
             if(owner == null || owner.equals(nextPlayer)) {
                 if(owner != null && owner.equals(nextPlayer)) {
@@ -119,10 +119,10 @@ public class MoveLogic {
 
         // 4
         possibleCellsToFlip.clear();
-        row = cell.getI();
+        row = cell.getRow();
         while(row > 0) {
             row--;
-            Cell currentCell = this.board.getBoardArray()[row][cell.getJ()];
+            Cell currentCell = this.board.getBoardArray()[row][cell.getColumn()];
             var owner = currentCell.getOwner();
             if(owner == null || owner.equals(nextPlayer)) {
                 if(owner != null && owner.equals(nextPlayer)) {
@@ -136,8 +136,8 @@ public class MoveLogic {
 
         // 5
         possibleCellsToFlip.clear();
-        row = cell.getI();
-        column = cell.getJ();
+        row = cell.getRow();
+        column = cell.getColumn();
         while(row > 0 && column > 0) {
             row--;
             column--;
@@ -155,8 +155,8 @@ public class MoveLogic {
         
         // 6
         possibleCellsToFlip.clear();
-        row = cell.getI();
-        column = cell.getJ();
+        row = cell.getRow();
+        column = cell.getColumn();
         while(row < this.board.getSize() - 1 && column < this.board.getSize() - 1) {
             row++;
             column++;
@@ -174,8 +174,8 @@ public class MoveLogic {
 
         // 7
         possibleCellsToFlip.clear();
-        row = cell.getI();
-        column = cell.getJ();
+        row = cell.getRow();
+        column = cell.getColumn();
         while(row < this.board.getSize() - 1 && column > 0) {
             row++;
             column--;
@@ -193,8 +193,8 @@ public class MoveLogic {
 
         // 8
         possibleCellsToFlip.clear();
-        row = cell.getI();
-        column = cell.getJ();
+        row = cell.getRow();
+        column = cell.getColumn();
         while(row > 0  && column < this.board.getSize() - 1) {
             row--;
             column++;
