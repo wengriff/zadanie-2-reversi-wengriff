@@ -9,12 +9,11 @@ import sk.stuba.fei.uim.oop.Entity.Enemy;
 import sk.stuba.fei.uim.oop.Entity.Entity;
 import sk.stuba.fei.uim.oop.Entity.Player;
 
-import java.awt.*;
-
 public class MoveLogic {
     private Board board;
     private Enemy enemy;
     private Player player;
+    private Cell selectedCell;
 
     public MoveLogic(Board board, Player player, Enemy enemy) {
         this.board = board;
@@ -39,10 +38,10 @@ public class MoveLogic {
 
     public void flipCells(List<Cell> cellsToFlip) {
         for(Cell cell : cellsToFlip) {
-            if(this.board.getBoardArray()[cell.getRow()][cell.getColumn()].getOwner() == this.enemy) {
-                this.board.getBoardArray()[cell.getRow()][cell.getColumn()].setOwner(this.player);
+            if(cell.getOwner() == this.enemy) {
+                cell.setOwner(this.player);
             } else {
-                this.board.getBoardArray()[cell.getRow()][cell.getColumn()].setOwner(this.enemy);
+                cell.setOwner(this.enemy);
             }
         }
     }
@@ -211,4 +210,8 @@ public class MoveLogic {
         }
         return cellsToFlip;
     }
+
+    public Cell getSelectedCell() { return this.selectedCell; }
+
+    public void setSelectedCell(Cell selectedCell) { this.selectedCell = selectedCell; }
 }

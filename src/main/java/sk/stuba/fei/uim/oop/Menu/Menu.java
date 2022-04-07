@@ -57,6 +57,7 @@ public class Menu extends JPanel {
         this.boardSizeSlider.setPaintLabels(true);
         this.boardSizeSlider.setPaintTicks(true);
         this.boardSizeSlider.setSnapToTicks(true);
+        this.boardSizeSlider.setFocusable(false);
     }
 
     private void createBoardSizeLabel() {

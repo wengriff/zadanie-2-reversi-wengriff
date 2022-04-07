@@ -15,7 +15,6 @@ import sk.stuba.fei.uim.oop.Menu.Menu;
 
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
-import java.util.List;
 
 public class Controller extends Listeners {
     private Frame frame;
@@ -87,50 +86,67 @@ public class Controller extends Listeners {
     @Override
     public void mousePressed(MouseEvent e) {
         Cell cell = (Cell)e.getSource();
+        this.moveLogic.setSelectedCell(cell);
 
         if(cell.hasOwner()) {
             return;
         }
 
-        if(this.moveLogic.isValidMove(this.nextPlayer , cell) && this.nextPlayer instanceof Player) {
-            List<Cell> cellsToFlip = this.moveLogic.getCellsToFlip(this.nextPlayer, cell);
-            this.moveLogic.flipCells(cellsToFlip);
-            cell.setOwner(this.player);
-            this.flipPlayer();
-        }
-
-        if(this.isGameFinished()) {
-            System.out.println("ddddddd");
-            this.displayWinner();
+        if(!this.moveLogic.isValidMove(this.player , cell)) {
             return;
         }
 
-        System.out.println(this.moveLogic.hasValidMove(this.enemy) + " - e");
+        if(this.nextPlayer instanceof Player) {
+            this.player.move(this.board, this.moveLogic);
+            this.flipPlayer();
+        }
 
-        if(!this.moveLogic.hasValidMove(this.enemy)) {
+        System.out.println(this.moveLogic.hasValidMove(this.enemy) + " first enemy");
+        if(!this.moveLogic.hasValidMove(this.enemy) || this.isGameFinished()) {
+            if(this.isGameFinished()) {
+                System.out.println("eeeee");
+                this.displayWinner();
+                return;
+            }
             this.flipPlayer();
             return;
         }
 
         // this.delay(2000);
-        if(this.moveLogic.hasValidMove(this.player) && this.nextPlayer instanceof Enemy) {
+        System.out.println(this.moveLogic.hasValidMove(this.enemy) + " second enemy");
+        if(!this.moveLogic.hasValidMove(this.enemy)) {
+            if(this.isGameFinished()) {
+                System.out.println("ddddddd");
+                this.displayWinner();
+                return;
+            }
+            this.flipPlayer();
+            return;
+        }
+
+        // Works
+        // ---------------------------------------------------------------------------
+        System.out.println(this.moveLogic.hasValidMove(this.enemy) + " third enemy");
+        if(this.moveLogic.hasValidMove(this.enemy) && this.nextPlayer instanceof Enemy) {
             do {
+                if(this.isGameFinished()) {
+                    System.out.println("kkkkkk");
+                    this.displayWinner();
+                    return;
+                }
                 this.enemy.move(this.board, this.moveLogic);
             } while(!this.moveLogic.hasValidMove(this.player));
             this.flipPlayer();
         }
-        System.out.println(this.moveLogic.hasValidMove(this.player) + " - p");
+        // ---------------------------------------------------------------------------
+
         if(this.isGameFinished()) {
             System.out.println("hhhhhhhh");
             this.displayWinner();
-            this.moveLogic.showPossibleMoves();
             return;
         }
+        System.out.println(this.moveLogic.hasValidMove(this.player) + " first player");
         this.moveLogic.showPossibleMoves();
-    }
-
-    private boolean isGameFinished() {
-        return (!this.moveLogic.hasValidMove(this.player) && !this.moveLogic.hasValidMove(this.enemy));
     }
 
     @Override
@@ -155,6 +171,11 @@ public class Controller extends Listeners {
                 cell.setBackground(Cell.DEFAULT_CELL_COLOR);
             }
         }
+    }
+
+    private boolean isGameFinished() {
+        this.moveLogic.showPossibleMoves();
+        return (!this.moveLogic.hasValidMove(this.player) && !this.moveLogic.hasValidMove(this.enemy));
     }
 
     private void flipPlayer() {

@@ -15,6 +15,7 @@ public class Enemy extends Entity {
         super.color = Color.BLACK;
     }
 
+    @Override
     public void move(Board board, MoveLogic moveLogic) {
         List<Cell> possibleMoves = new ArrayList<>();
         Cell bestMove;
@@ -27,7 +28,6 @@ public class Enemy extends Entity {
             }
         }
         bestMove = possibleMoves.get(0);
-        bestMove.getSize();
         for(Cell cell : possibleMoves) {
             if(moveLogic.getCellsToFlip(this, cell).size() > moveLogic.getCellsToFlip(this, bestMove).size()) {
                 bestMove = cell;
