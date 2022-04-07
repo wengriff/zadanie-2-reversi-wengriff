@@ -22,7 +22,7 @@ public class MoveLogic {
     } 
 
     public boolean isValidMove(Entity nextPlayer, Cell cell) {
-        return !(this.getCellsToFlip(nextPlayer, cell).isEmpty());
+        return !(this.getCellsToFlip(nextPlayer, cell).isEmpty()) && !cell.hasOwner();
     }
     
     public boolean hasValidMove(Entity nextPlayer) {
@@ -62,6 +62,7 @@ public class MoveLogic {
         }
     }
 
+    // Don't judge me #pls
     public List<Cell> getCellsToFlip(Entity nextPlayer, Cell cell) {
         List<Cell> cellsToFlip = new ArrayList<>();
 

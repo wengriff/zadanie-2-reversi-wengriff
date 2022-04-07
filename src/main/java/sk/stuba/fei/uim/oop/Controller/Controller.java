@@ -85,37 +85,32 @@ public class Controller extends Listeners {
 
         this.player.move(this.board, this.moveLogic);
 
-        if(this.isGameFinished()) { // for some reason its false for player
-            System.out.println("eeeee");
-            this.moveLogic.showPossibleMoves();
-            this.displayWinner();
-            return;
-        }
+        this.menu.updateNextPlayerLabel(this.enemy);
+        Timer timer = new Timer(150, event -> {
+            this.menu.updateNextPlayerLabel(this.player);
+        });
 
-        // this.delay(2000);
+        timer.setRepeats(false);
+        timer.start();
+
         if(!this.moveLogic.hasValidMove(this.enemy)) {
-            System.out.println(!this.moveLogic.hasValidMove(this.enemy) + " first enemy");
-            return;
+            if(this.moveLogic.hasValidMove(this.player)) {
+                this.player.move(this.board, this.moveLogic);
+            }
+            else {
+                this.displayWinner();
+            }
         }
 
-        // Works
-        // ---------------------------------------------------------------------------
-        int i = 0;
         do {
-            if(this.isGameFinished() || !this.moveLogic.hasValidMove(this.enemy)) {
-                System.out.println("break");
+            if(!this.moveLogic.hasValidMove(this.enemy)) {
                 break;
             }
-            System.out.println("do while " + i++);
             this.enemy.move(this.board, this.moveLogic);
         } while(!this.moveLogic.hasValidMove(this.player));
-        // ---------------------------------------------------------------------------
 
         if(this.isGameFinished()) {
-            System.out.println("hhhhhhhh");
-            this.moveLogic.showPossibleMoves();
             this.displayWinner();
-            return;
         }
         this.moveLogic.showPossibleMoves();
     }
