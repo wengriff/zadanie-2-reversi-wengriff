@@ -16,10 +16,10 @@ public class Reversi {
         
         Controller controller = new Controller(frame);
         frame.addKeyListener(controller);
+        
         frame.setFocusable(true);
 
         frame.add(controller.getGameArea(), BorderLayout.CENTER);
-
         frame.add(controller.getMenu(), BorderLayout.SOUTH);
 
         frame.setVisible(true);

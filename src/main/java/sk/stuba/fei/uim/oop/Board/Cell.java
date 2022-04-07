@@ -29,9 +29,29 @@ public class Cell extends JPanel {
         owner.getCells().add(cell);
     }
 
+    public void setCellHighlight() {
+        if(!this.hasOwner()) {
+            if(this.getBackground() != Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
+                this.setBackground(Cell.DEFAULT_CELL_HIGHLIGHT);
+            } else if (this.getBackground() == Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
+                this.setBackground(Cell.POSSIBLE_MOVE_CELL_HOVER_HIGHLIGHT);
+            }
+        }
+    }
+
+    public void removeCellHighlight() {
+        if(!this.hasOwner()) {
+            if(this.getBackground() == Cell.POSSIBLE_MOVE_CELL_HOVER_HIGHLIGHT) {
+                this.setBackground(Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT);
+            } else if (this.getBackground() != Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
+                this.setBackground(Cell.DEFAULT_CELL_COLOR);
+            }
+        }
+    }
+
     public Entity getOwner() { return this.owner; }
 
-    public void removeOwner() { this.owner = null; }
+    // public void removeOwner() { this.owner = null; }
 
     public boolean hasOwner() { return this.owner != null; }
 
