@@ -48,10 +48,6 @@ public class Controller extends Listeners {
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {
-            // case KeyEvent.VK_W:
-            //     this.enemy.move(this.board, this.moveLogic);
-            //     this.moveLogic.showPossibleMoves();
-            // break;
             case KeyEvent.VK_R:
                 this.restartGame();
                 break;
@@ -134,14 +130,6 @@ public class Controller extends Listeners {
     private void clearScore() {
         this.player.getCells().clear();
         this.enemy.getCells().clear();
-    }
-
-    private void delay(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     private String determineWinner() {
