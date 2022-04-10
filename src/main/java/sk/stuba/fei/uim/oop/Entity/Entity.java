@@ -25,4 +25,6 @@ public abstract class Entity {
     public List<Cell> getCells() { return this.cells; }
 
     protected abstract void move(Board board, MoveLogic moveLogic);
+
+    public int getScore() { return this.getCells().size(); }
 }

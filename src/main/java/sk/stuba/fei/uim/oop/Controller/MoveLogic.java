@@ -36,13 +36,14 @@ public class MoveLogic {
         return false;
     }
 
-    public void flipCells(List<Cell> cellsToFlip) {
+    public void flipCells(Entity entity, List<Cell> cellsToFlip) {
         for(Cell cell : cellsToFlip) {
-            if(cell.getOwner() == this.enemy) {
-                cell.setOwner(this.player);
-            } else {
+            if(entity == this.enemy) {
                 cell.setOwner(this.enemy);
+            } else {
+                cell.setOwner(this.player);
             }
+            // System.out.println(this.player.getScore() + " <--- Player 2");
         }
     }
 
@@ -52,7 +53,7 @@ public class MoveLogic {
                 Cell cell = this.board.getBoardArray()[i][j];
                 if(!cell.hasOwner()) {
                     if(cell.getBackground() == Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
-                        cell.setBackground(Cell.DEFAULT_CELL_COLOR);
+                        cell.setDefaultCellBackground(cell);
                     }
                     if(this.isValidMove(this.player, cell)) {
                         cell.setBackground(Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT);

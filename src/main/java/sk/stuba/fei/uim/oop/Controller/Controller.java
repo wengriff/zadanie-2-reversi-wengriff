@@ -8,6 +8,7 @@ import javax.swing.event.*;
 import sk.stuba.fei.uim.oop.Board.Board;
 import sk.stuba.fei.uim.oop.Board.Cell;
 import sk.stuba.fei.uim.oop.Entity.Enemy;
+import sk.stuba.fei.uim.oop.Entity.Entity;
 import sk.stuba.fei.uim.oop.Entity.Player;
 import sk.stuba.fei.uim.oop.Menu.Menu;
 
@@ -40,7 +41,7 @@ public class Controller extends Listeners {
         this.board.createBoard();
         this.frame.add(this.board.getGameArea());
         this.board.setStartingPosition(this.player, this.enemy);
-        this.menu.resetNextPlayerLabel();
+        this.menu.createNextPlayerLabel();
         this.moveLogic.showPossibleMoves();
         this.frame.revalidate();
     }
@@ -81,19 +82,12 @@ public class Controller extends Listeners {
 
         this.player.move(this.board, this.moveLogic);
 
-        this.menu.updateNextPlayerLabel(this.enemy);
-        Timer timer = new Timer(150, event -> {
-            this.menu.updateNextPlayerLabel(this.player);
-        });
-
-        timer.setRepeats(false);
-        timer.start();
+        // this.menu.updateNextPlayerLabel(this.enemy);
 
         if(!this.moveLogic.hasValidMove(this.enemy)) {
             if(this.moveLogic.hasValidMove(this.player)) {
                 this.player.move(this.board, this.moveLogic);
-            }
-            else {
+            } else {
                 this.displayWinner();
             }
         }
@@ -109,6 +103,7 @@ public class Controller extends Listeners {
             this.displayWinner();
         }
         this.moveLogic.showPossibleMoves();
+        this.menu.updateNextPlayerLabel(this.player);
     }
 
     @Override
@@ -132,13 +127,13 @@ public class Controller extends Listeners {
         this.enemy.getCells().clear();
     }
 
-    private String determineWinner() {
-        return this.enemy.getCells().size() < this.player.getCells().size() ? "Player" : "Computer";
+    private Entity determineWinner() {
+        return this.enemy.getCells().size() < this.player.getCells().size() ? this.player : this.enemy;
     }
 
     private void displayWinner() {
-        String winner = determineWinner();
-        this.menu.getNextPlayerLabel().setText(winner + " Won!");
+        Entity winner = determineWinner();
+        this.menu.getNextPlayerLabel().setText(winner.getName() + " Won with " + winner.getScore() + " stones!");
     }
 
     public JPanel getGameArea() { return this.board.getGameArea(); }

@@ -69,17 +69,13 @@ public class Menu extends JPanel {
         this.boardSizeLabel.setText("Board size: " + this.board.getSize() + "x" + this.board.getSize());
     }
 
-    private void createNextPlayerLabel() {
+    public void createNextPlayerLabel() {
         this.nextPlayerLabel.setHorizontalAlignment(JLabel.CENTER);
         this.nextPlayerLabel.setText("Next move: Player" );
     }
 
-    public void resetNextPlayerLabel() {
-        this.nextPlayerLabel.setText("Next move: Player" );
-    }
-
     public void updateNextPlayerLabel(Entity nextPlayer) {
-        this.nextPlayerLabel.setText("Next move: " + (nextPlayer.getName() == "Player" ? "Player" : "Computer"));
+        this.nextPlayerLabel.setText("Next move: " + (nextPlayer.getName() == "Player" ? "Player (" + nextPlayer.getScore() + ")": "Computer"));
     }
     
     public JButton getRestartButton() { return this.restart; }

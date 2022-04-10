@@ -34,7 +34,7 @@ public class Enemy extends Entity {
             }
         }
         List<Cell> cellsToFlip = moveLogic.getCellsToFlip(this, bestMove);
-        moveLogic.flipCells(cellsToFlip);
+        moveLogic.flipCells(this,cellsToFlip);
         bestMove.setOwner(this);
     }
 }
