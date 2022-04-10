@@ -38,12 +38,11 @@ public class MoveLogic {
 
     public void flipCells(Entity entity, List<Cell> cellsToFlip) {
         for(Cell cell : cellsToFlip) {
-            if(entity == this.enemy) {
+            if(entity.equals(this.enemy)) {
                 cell.setOwner(this.enemy);
             } else {
                 cell.setOwner(this.player);
             }
-            // System.out.println(this.player.getScore() + " <--- Player 2");
         }
     }
 

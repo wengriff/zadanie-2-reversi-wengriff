@@ -5,7 +5,6 @@ import java.awt.*;
 
 import sk.stuba.fei.uim.oop.Entity.Entity;
 
-
 public class Cell extends JPanel {
     // public static final Color DEFAULT_CELL_COLOR = new Color(7, 176, 30);
     public static final Color DEFAULT_CELL_COLOR_ONE = new Color(255, 204, 204);
@@ -60,8 +59,6 @@ public class Cell extends JPanel {
     }
 
     public Entity getOwner() { return this.owner; }
-
-    // public void removeOwner() { this.owner = null; }
 
     public boolean hasOwner() { return this.owner != null; }
 

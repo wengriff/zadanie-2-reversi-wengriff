@@ -6,9 +6,6 @@ import sk.stuba.fei.uim.oop.Entity.Enemy;
 import sk.stuba.fei.uim.oop.Entity.Player;
 import java.awt.event.*;
 
-
-
-
 public class Board {
     public static final int BOARD_SIZE_MIN = 6;
     public static final int BOARD_SIZE_MAX = 12;

@@ -3,8 +3,6 @@ package sk.stuba.fei.uim.oop.Entity;
 import java.awt.Color;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import sk.stuba.fei.uim.oop.Board.Board;
 import sk.stuba.fei.uim.oop.Board.Cell;
 import sk.stuba.fei.uim.oop.Controller.MoveLogic;
@@ -18,7 +16,6 @@ public class Player extends Entity {
 
     @Override
     public void move(Board board, MoveLogic moveLogic) {
-
         List<Cell> cellsToFlip = moveLogic.getCellsToFlip(this, moveLogic.getSelectedCell());
         moveLogic.flipCells(this,cellsToFlip);
         moveLogic.getSelectedCell().setOwner(this);

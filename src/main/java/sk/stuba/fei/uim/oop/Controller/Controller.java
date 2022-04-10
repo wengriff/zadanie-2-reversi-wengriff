@@ -12,7 +12,6 @@ import sk.stuba.fei.uim.oop.Entity.Entity;
 import sk.stuba.fei.uim.oop.Entity.Player;
 import sk.stuba.fei.uim.oop.Menu.Menu;
 
-
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
 
@@ -82,8 +81,6 @@ public class Controller extends Listeners {
 
         this.player.move(this.board, this.moveLogic);
 
-        // this.menu.updateNextPlayerLabel(this.enemy);
-
         if(!this.moveLogic.hasValidMove(this.enemy)) {
             if(this.moveLogic.hasValidMove(this.player)) {
                 this.player.move(this.board, this.moveLogic);
@@ -99,11 +96,13 @@ public class Controller extends Listeners {
             this.enemy.move(this.board, this.moveLogic);
         } while(!this.moveLogic.hasValidMove(this.player));
 
+        this.menu.updateNextPlayerLabel(this.player);
+
         if(this.isGameFinished()) {
             this.displayWinner();
         }
+        
         this.moveLogic.showPossibleMoves();
-        this.menu.updateNextPlayerLabel(this.player);
     }
 
     @Override
