@@ -1,19 +1,23 @@
 package sk.stuba.fei.uim.oop.Board;
 
 import javax.swing.JPanel;
+
 import java.awt.*;
 
 import sk.stuba.fei.uim.oop.Entity.Entity;
 
 public class Cell extends JPanel {
     // public static final Color DEFAULT_CELL_COLOR = new Color(7, 176, 30);
-    public static final Color DEFAULT_CELL_COLOR_ONE = new Color(255, 204, 204);
-    public static final Color DEFAULT_CELL_COLOR_TWO = new Color(204, 255, 204);
-    public static final Color DEFAULT_CELL_HIGHLIGHT = new Color(153, 255, 102);
+    public static final Color DEFAULT_CELL_COLOR_ONE = new Color(1, 174, 0);
+    public static final Color DEFAULT_CELL_COLOR_TWO = new Color(0, 130, 0);
+    public static final Color DEFAULT_CELL_HIGHLIGHT = new Color(153, 200, 102);
     public static final Color POSSIBLE_MOVE_CELL_HIGHLIGHT = new Color(153, 204, 255);
     public static final Color POSSIBLE_MOVE_CELL_HOVER_HIGHLIGHT = new Color(51, 153, 255); 
     private Entity owner;
     private int row,column;
+    Image blackStoneImg;
+    Image whiteStoneImg;
+
 
     public Cell(int row, int column) {
         this.owner = null;
@@ -27,7 +31,8 @@ public class Cell extends JPanel {
         }
         this.owner = owner;
         this.owner.getCells().add(this);
-        this.setBackground(this.owner.getColor());
+        this.setDefaultCellBackground(this);
+        this.paint(this.getGraphics());
     }
 
     public void setDefaultCellBackground(Cell cell) {
@@ -55,6 +60,19 @@ public class Cell extends JPanel {
             } else if (this.getBackground() != Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
                 this.setDefaultCellBackground(this);
             }
+        }
+    }
+
+    @Override protected void paintComponent(Graphics g) { 
+        super.paintComponent(g); 
+
+        if(this.owner != null) {
+            g.setColor(this.owner.getColor());
+            int ovalWidth = (int)(this.getWidth() - (this.getWidth() * 0.15));
+            int ovalHeight = (int)(this.getHeight() - (this.getHeight() * 0.15));
+            int ovalX = (int)(this.getWidth() - ovalWidth) / 2;
+            int ovalY = (int)(this.getHeight() - ovalHeight) / 2;
+            g.fillOval(ovalX, ovalY, ovalWidth, ovalHeight);
         }
     }
 

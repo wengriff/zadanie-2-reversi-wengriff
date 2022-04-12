@@ -18,7 +18,8 @@ public class Enemy extends Entity {
     @Override
     public void move(Board board, MoveLogic moveLogic) {
         List<Cell> possibleMoves = new ArrayList<>();
-        Cell bestMove;
+        Cell bestMove = null;
+
         for(int i = 0; i < board.getSize(); i++) {
             for(int j = 0; j < board.getSize(); j++) {
                 Cell cell = board.getBoardArray()[i][j];
@@ -27,12 +28,15 @@ public class Enemy extends Entity {
                 }
             }
         }
+
         bestMove = possibleMoves.get(0);
+
         for(Cell cell : possibleMoves) {
             if(moveLogic.getCellsToFlip(this, cell).size() > moveLogic.getCellsToFlip(this, bestMove).size()) {
                 bestMove = cell;
             }
         }
+
         List<Cell> cellsToFlip = moveLogic.getCellsToFlip(this, bestMove);
         moveLogic.flipCells(this,cellsToFlip);
         bestMove.setOwner(this);
