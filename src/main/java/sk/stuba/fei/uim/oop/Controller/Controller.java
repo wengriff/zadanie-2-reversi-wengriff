@@ -3,8 +3,6 @@ package sk.stuba.fei.uim.oop.Controller;
 import javax.swing.*;
 import java.awt.*;
 
-import javax.swing.event.*;
-
 import sk.stuba.fei.uim.oop.Board.Board;
 import sk.stuba.fei.uim.oop.Board.Cell;
 import sk.stuba.fei.uim.oop.Entity.Enemy;
@@ -12,6 +10,7 @@ import sk.stuba.fei.uim.oop.Entity.Entity;
 import sk.stuba.fei.uim.oop.Entity.Player;
 import sk.stuba.fei.uim.oop.Menu.Menu;
 
+import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
 
@@ -101,7 +100,7 @@ public class Controller extends Listeners {
         if(this.isGameFinished()) {
             this.displayWinner();
         }
-        
+
         this.moveLogic.showPossibleMoves();
     }
 
