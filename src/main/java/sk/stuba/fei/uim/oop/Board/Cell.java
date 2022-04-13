@@ -7,17 +7,12 @@ import java.awt.*;
 import sk.stuba.fei.uim.oop.Entity.Entity;
 
 public class Cell extends JPanel {
-    // public static final Color DEFAULT_CELL_COLOR = new Color(7, 176, 30);
     public static final Color DEFAULT_CELL_COLOR_ONE = new Color(1, 174, 0);
     public static final Color DEFAULT_CELL_COLOR_TWO = new Color(0, 130, 0);
-    public static final Color DEFAULT_CELL_HIGHLIGHT = new Color(153, 200, 102);
     public static final Color POSSIBLE_MOVE_CELL_HIGHLIGHT = new Color(153, 204, 255);
     public static final Color POSSIBLE_MOVE_CELL_HOVER_HIGHLIGHT = new Color(51, 153, 255); 
     private Entity owner;
     private int row,column;
-    Image blackStoneImg;
-    Image whiteStoneImg;
-
 
     public Cell(int row, int column) {
         this.owner = null;
@@ -45,9 +40,7 @@ public class Cell extends JPanel {
 
     public void setCellHighlight() {
         if(!this.hasOwner()) {
-            if(this.getBackground() != Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
-                this.setBackground(Cell.DEFAULT_CELL_HIGHLIGHT);
-            } else if (this.getBackground() == Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
+            if (this.getBackground() == Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
                 this.setBackground(Cell.POSSIBLE_MOVE_CELL_HOVER_HIGHLIGHT);
             }
         }
@@ -57,8 +50,6 @@ public class Cell extends JPanel {
         if(!this.hasOwner()) {
             if(this.getBackground() == Cell.POSSIBLE_MOVE_CELL_HOVER_HIGHLIGHT) {
                 this.setBackground(Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT);
-            } else if (this.getBackground() != Cell.POSSIBLE_MOVE_CELL_HIGHLIGHT) {
-                this.setDefaultCellBackground(this);
             }
         }
     }
