@@ -56,7 +56,11 @@ public class Cell extends JPanel {
 
     @Override protected void paintComponent(Graphics g) { 
         super.paintComponent(g); 
+        this.drawStone(g);
 
+    }
+
+    private void drawStone(Graphics g) {
         if(this.owner != null) {
             g.setColor(this.owner.getColor());
             int ovalWidth = (int)(this.getWidth() - (this.getWidth() * 0.15));
